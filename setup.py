@@ -1,7 +1,14 @@
 from setuptools import setup, find_packages
+from setuptools.command.install import install
 from codecs import open
 from os import path
 from unittest import TestLoader
+import warnings
+
+class PostInstallMessage(install):
+    def run(self):
+        print "DEPRECATION WARNING: The swiftype_app_search package has been deprecated and replaced by elastic-app-search"
+        install.run(self)
 
 here = path.abspath(path.dirname(__file__))
 
@@ -45,5 +52,8 @@ setup(
         'requests_mock',
         'future'
     ],
-    test_suite='tests'
+    test_suite='tests',
+    cmdclass={
+        'install': PostInstallMessage,
+    }
 )
